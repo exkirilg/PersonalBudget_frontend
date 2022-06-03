@@ -8,7 +8,7 @@ import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 
 export const Header = () => (
-    <Navbar bg="light">
+    <Navbar bg="light" className="border-bottom">
         <Container>
             <Navbar.Brand href="/">
                 <Logo />
