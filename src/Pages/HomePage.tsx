@@ -1,12 +1,14 @@
 import React from "react";
 
-import Container from "react-bootstrap/Container";
+import { Page } from "./Page";
 
 import { BudgetOperationsTable } from "../Components/BudgetOperationsTable";
 import { getBudgetOperations } from "../Components/BudgetOperationsData";
 
 export const HomePage = () => (
-    <Container>
-        <BudgetOperationsTable data={getBudgetOperations()} />
-    </Container>
+    <Page>
+        <div className="mt-3">
+            <BudgetOperationsTable data={getBudgetOperations()} />
+        </div>
+    </Page>
 );
