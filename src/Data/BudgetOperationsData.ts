@@ -1,13 +1,12 @@
-import { BudgetOperation } from "../Interfaces/BudgetOperation"
+import { wait } from '@testing-library/user-event/dist/utils';
+import { BudgetOperation } from '../Interfaces/BudgetOperation';
 
-{/*
-export const getBudgetOperations = (dateFrom: Date, dateTo: Date, pageNumber: number, pageSize: number): BudgetOperation[] => {
-    return budgetOperations.filter(operation => operation.date >= dateFrom && operation.date < dateTo);
-};
-*/}
-
-export const getBudgetOperations = (): BudgetOperation[] => {
-    return budgetOperations;
+export const getBudgetOperations = async (dateFrom: Date, dateTo: Date, search: string = ''): Promise<BudgetOperation[]> => {
+    await wait(2000);
+    return budgetOperations.filter(
+        operation => operation.date >= dateFrom
+        && operation.date <= dateTo
+        && (search === '' || operation.item.name.toLowerCase().indexOf(search.toLowerCase()) >= 0 ));
 };
 
 const budgetOperations: BudgetOperation[] = [
