@@ -11,10 +11,10 @@ export const BudgetOperationPage = () => {
     return (
         <Page>
             {operationId !== null && (
-                <React.Fragment>
+                <>
                     <BudgetOperationEdit operationId={Number(operationId)} />
-                </React.Fragment>
+                </>
             )}
         </Page>
-    )
+    );
 }
