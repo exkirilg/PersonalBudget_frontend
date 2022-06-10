@@ -2,7 +2,7 @@ import React from "react";
 
 import { Page } from "./Page";
 
-import { BudgetOperationsTable } from "../Components/BudgetOperationsTable";
+import { BudgetOperationsTable } from "../Components/BudgetOperations/BudgetOperationsTable";
 
 export const HomePage = () => (
     <Page>

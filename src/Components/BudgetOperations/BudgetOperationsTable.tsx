@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AppState, } from "../State/Store";
-import { gettingBudgetOperationsAction, gotBudgetOperationsAction } from "../State/BudgetOperationsState";
-
+import { AppState } from "../../State/Store";
+import { gettingBudgetOperationsAction, gotBudgetOperationsAction } from "../../State/BudgetOperationsState";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -11,12 +11,12 @@ import Stack from "react-bootstrap/Stack";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
-import { BudgetOperation } from "../Interfaces/BudgetOperation";
-import { getBudgetOperations } from "../Data/BudgetOperationsData";
+import { BudgetOperation } from "../../Interfaces/BudgetOperation";
+import { getBudgetOperations } from "../../Data/BudgetOperationsData";
 
-import { getCurrentMonthBeginning, getCurrentMonthEnd, getDateAsString, getDateBeginning, getDateEnd} from "../Services/DateTimeServices";
+import { getCurrentMonthBeginning, getCurrentMonthEnd, getDateAsString, getDateBeginning, getDateEnd} from "../../Services/DateTimeServices";
 
-import { FilterIcon } from "./Images";
+import { FilterIcon, EditIcon } from "../Images";
 
 type FilterSettingsFormData = {
     dateFrom: Date,
@@ -74,9 +74,10 @@ export const BudgetOperationsTable = () => {
                 <Table bordered hover>
                     <thead className="thead-dark">
                         <tr>
-                            <th>Date</th>
-                            <th>Item</th>
+                            <th className="col-4">Date</th>
+                            <th className="col-5">Item</th>
                             <th className="col-2">Sum</th>
+                            <th className="col-1"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,7 +87,7 @@ export const BudgetOperationsTable = () => {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td className="fs-5 fw-bold text-end" colSpan={3}>
+                            <td className="fs-5 fw-bold text-end" colSpan={4}>
                                 {budgetOperationsTableResult(getBudgetOperationsResult(operations))}
                             </td>
                         </tr>
@@ -102,9 +103,16 @@ const budgetOperationsTableRow = (operation : BudgetOperation) => {
     let bgClass = operation.type === 0 ? "table-success" : "table-danger";
     return (
         <tr key={operation.id} className={bgClass}>
-            <td>{operation.date.toLocaleString()}</td>
-            <td>{operation.item.name}</td>
-            <td>{operation.sum}</td>
+            <td className="text-start align-middle">{operation.date.toLocaleString()}</td>
+            <td className="text-start align-middle">{operation.item.name}</td>
+            <td className="text-end align-middle">{operation.sum.toFixed(2)}</td>
+            <td>
+                <Link to={`/budgetoperations/${operation.id}`}>
+                    <span className="btn btn-outline-secondary ms-2 btn-sm">
+                        <EditIcon />
+                    </span>
+                </Link>
+            </td>
         </tr>
     );
 }

@@ -10,6 +10,7 @@ import { Footer } from './Components/Footer';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { HomePage } from './Pages/HomePage';
+import { BudgetOperationPage } from './Pages/BudgetOperationPage';
 import { SignInPage } from './Pages/SignInPage';
 import { SignUpPage } from './Pages/SignUpPage';
 import { UserPage } from './Pages/UserPage';
@@ -26,6 +27,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="" element={<HomePage />} />
+            <Route path="budgetOperations/:operationId" element={<BudgetOperationPage />} />
             <Route path="signin" element={<SignInPage />} />
             <Route path="signup" element={<SignUpPage />} />
             <Route path="user" element={<UserPage />} />

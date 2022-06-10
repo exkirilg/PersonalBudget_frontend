@@ -31,3 +31,15 @@ export const getBudgetOperations = async (dateFrom: Date, dateTo: Date, search: 
         return [];
     }
 }
+
+export const getBudgetOperationById = async (id: number): Promise<BudgetOperation | null> => {
+    const result = await HttpRequest<BudgetOperationDataFromServer>({
+        path: `/budgetoperations/${id}`
+    });
+
+    if (result.ok && result.body) {
+        return mapBudgetOperationFromServer(result.body);
+    } else {
+        return null;
+    }
+}
