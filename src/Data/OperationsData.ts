@@ -1,8 +1,8 @@
 import { HttpRequest } from "../Services/HttpServices";
 
-import { BudgetOperation } from "../Interfaces/BudgetOperation";
+import { Operation } from "../Interfaces/Operation";
 
-export interface BudgetOperationDataFromServer {
+export interface OperationDataFromServer {
     id: number,
     date: Date,
     type: number,
@@ -14,31 +14,31 @@ export interface BudgetOperationDataFromServer {
     };
 }
 
-export const mapBudgetOperationFromServer = (operation: BudgetOperationDataFromServer): BudgetOperation => ({
+export const mapOperationFromServer = (operation: OperationDataFromServer): Operation => ({
     ...operation,
     date: new Date(operation.date)
 });
 
-export const getBudgetOperations = async (dateFrom: Date, dateTo: Date, search: string = ''): Promise<BudgetOperation[]> => {
-    const result = await HttpRequest<BudgetOperationDataFromServer[]>({
+export const getOperations = async (dateFrom: Date, dateTo: Date, search: string = ''): Promise<Operation[]> => {
+    const result = await HttpRequest<OperationDataFromServer[]>({
         path: `/budgetoperations?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`
     });
     
     if (result.ok && result.body) {
-        return result.body.map(mapBudgetOperationFromServer)
+        return result.body.map(mapOperationFromServer)
             .filter(operation => search === '' || operation.item.name.toLowerCase().indexOf(search.toLowerCase()) >= 0);
     } else {
         return [];
     }
 }
 
-export const getBudgetOperationById = async (id: number): Promise<BudgetOperation | null> => {
-    const result = await HttpRequest<BudgetOperationDataFromServer>({
+export const getOperationById = async (id: number): Promise<Operation | null> => {
+    const result = await HttpRequest<OperationDataFromServer>({
         path: `/budgetoperations/${id}`
     });
 
     if (result.ok && result.body) {
-        return mapBudgetOperationFromServer(result.body);
+        return mapOperationFromServer(result.body);
     } else {
         return null;
     }

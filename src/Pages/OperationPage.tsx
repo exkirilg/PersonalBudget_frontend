@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { BudgetOperationEdit } from "../Components/BudgetOperations/BudgetOperationEdit";
+import { OperationEdit } from "../Components/Operations/OperationEdit";
 
 import { Page } from "./Page";
 
-export const BudgetOperationPage = () => {
+export const OperationPage = () => {
     
     const { operationId } = useParams();
 
@@ -12,7 +12,7 @@ export const BudgetOperationPage = () => {
         <Page>
             {operationId !== null && (
                 <>
-                    <BudgetOperationEdit operationId={Number(operationId)} />
+                    <OperationEdit operationId={Number(operationId)} />
                 </>
             )}
         </Page>

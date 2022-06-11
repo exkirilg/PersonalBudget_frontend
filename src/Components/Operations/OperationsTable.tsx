@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "../../State/Store";
-import { gettingBudgetOperationsAction, gotBudgetOperationsAction } from "../../State/BudgetOperationsState";
+import { gettingOperationsAction, gotOperationsAction } from "../../State/OperationsState";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -11,8 +11,8 @@ import Stack from "react-bootstrap/Stack";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
-import { BudgetOperation } from "../../Interfaces/BudgetOperation";
-import { getBudgetOperations } from "../../Data/BudgetOperationsData";
+import { Operation } from "../../Interfaces/Operation";
+import { getOperations } from "../../Data/OperationsData";
 
 import { getCurrentMonthBeginning, getCurrentMonthEnd, getDateAsString, getDateBeginning, getDateEnd} from "../../Services/DateTimeServices";
 
@@ -24,29 +24,29 @@ type FilterSettingsFormData = {
     search: string;
 }
 
-export const BudgetOperationsTable = () => {
+export const OperationsTable = () => {
 
     const dispatch = useDispatch();
     
     const initialDateFrom = getCurrentMonthBeginning();
     const initialDateTo = getCurrentMonthEnd();
 
-    const operations = useSelector((state: AppState) => state.budgetOperations.operations);
-    const operationsLoading = useSelector((state: AppState) => state.budgetOperations.loading);
+    const operations = useSelector((state: AppState) => state.operations.operations);
+    const operationsLoading = useSelector((state: AppState) => state.operations.loading);
 
-    const doGetBudgetOperations = async (dateFrom: Date, dateTo: Date, search: string = '') => {
-        dispatch(gettingBudgetOperationsAction());
-        const budgetOperations = await getBudgetOperations(getDateBeginning(dateFrom), getDateEnd(dateTo), search);
-        dispatch(gotBudgetOperationsAction(budgetOperations));
+    const doGetOperations = async (dateFrom: Date, dateTo: Date, search: string = '') => {
+        dispatch(gettingOperationsAction());
+        const operations = await getOperations(getDateBeginning(dateFrom), getDateEnd(dateTo), search);
+        dispatch(gotOperationsAction(operations));
     };
 
     React.useEffect(() => {
-        doGetBudgetOperations(initialDateFrom, initialDateTo);
+        doGetOperations(initialDateFrom, initialDateTo);
     }, []);
 
     const { register, handleSubmit } = useForm<FilterSettingsFormData>();
     const submitFilterSettings = ({dateFrom, dateTo, search}: FilterSettingsFormData) => {
-        doGetBudgetOperations(getDateBeginning(dateFrom), getDateEnd(dateTo), search);
+        doGetOperations(getDateBeginning(dateFrom), getDateEnd(dateTo), search);
     }
 
     return (
@@ -82,13 +82,13 @@ export const BudgetOperationsTable = () => {
                     </thead>
                     <tbody>
                         {operations.map((operation) => (
-                            budgetOperationsTableRow(operation)
+                            operationsTableRow(operation)
                         ))}
                     </tbody>
                     <tfoot>
                         <tr>
                             <td className="fs-5 fw-bold text-end" colSpan={4}>
-                                {budgetOperationsTableResult(getBudgetOperationsResult(operations))}
+                                {operationsTableResult(getOperationsResult(operations))}
                             </td>
                         </tr>
                     </tfoot>
@@ -99,7 +99,7 @@ export const BudgetOperationsTable = () => {
     );
 }
 
-const budgetOperationsTableRow = (operation : BudgetOperation) => {
+const operationsTableRow = (operation : Operation) => {
     let bgClass = operation.type === 0 ? "table-success" : "table-danger";
     return (
         <tr key={operation.id} className={bgClass}>
@@ -107,7 +107,7 @@ const budgetOperationsTableRow = (operation : BudgetOperation) => {
             <td className="text-start align-middle">{operation.item.name}</td>
             <td className="text-end align-middle">{operation.sum.toFixed(2)}</td>
             <td>
-                <Link to={`/budgetoperations/${operation.id}`}>
+                <Link to={`/operations/${operation.id}`}>
                     <span className="btn btn-outline-secondary ms-2 btn-sm">
                         <EditIcon />
                     </span>
@@ -117,7 +117,7 @@ const budgetOperationsTableRow = (operation : BudgetOperation) => {
     );
 }
 
-const budgetOperationsTableResult = (result: number) => {
+const operationsTableResult = (result: number) => {
     let fontClass = result >= 0 ? "text-success" : "text-danger";
     return (
         <span className={fontClass}>
@@ -126,11 +126,11 @@ const budgetOperationsTableResult = (result: number) => {
     );
 }
 
-function getBudgetOperationsResult(data : BudgetOperation[]) : number {
-    return getBudgetOperationsSum(data, 0) - getBudgetOperationsSum(data, 1);
+function getOperationsResult(data : Operation[]) : number {
+    return getOperationsSum(data, 0) - getOperationsSum(data, 1);
 }
 
-function getBudgetOperationsSum (data : BudgetOperation[], type : number) : number {
+function getOperationsSum (data : Operation[], type : number) : number {
     let result = data.reduce((a, b) => {
         a += (b.type === type ? b.sum : 0);
         return a;

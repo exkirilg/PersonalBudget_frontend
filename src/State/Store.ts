@@ -1,6 +1,6 @@
 import { Store, createStore, combineReducers } from 'redux';
 
-import { BudgetOperationsState, BudgetOperationsReducer } from './BudgetOperationsState';
+import { OperationsState, OperationsReducer } from './OperationsState';
 
 export function configureStore(): Store<AppState> {
     const store = createStore(rootReducer, undefined);
@@ -8,9 +8,9 @@ export function configureStore(): Store<AppState> {
 }
 
 export interface AppState {
-    readonly budgetOperations: BudgetOperationsState
+    readonly operations: OperationsState
 }
 
 const rootReducer = combineReducers<AppState>({
-    budgetOperations: BudgetOperationsReducer
+    operations: OperationsReducer
 });
