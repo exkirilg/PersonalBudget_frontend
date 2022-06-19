@@ -6,6 +6,8 @@ import filterIcon from "../Images/filter-icon.svg";
 import editIcon from "../Images/edit-icon.svg";
 import okIcon from "../Images/ok-icon.svg";
 import deleteIcon from "../Images/delete-icon.svg";
+import plusIcon from "../Images/plus-icon.svg";
+import minusIcon from "../Images/minus-icon.svg";
 
 export const Logo = () => (
     <img src={logo} alt="Personal Budget" width="124px" />
@@ -29,4 +31,12 @@ export const OkIcon = () => (
 
 export const DeleteIcon = () => (
     <img src={deleteIcon} alt="Delete" width="24px" className="mx-1" />
+);
+
+export const PlusIcon = () => (
+    <img src={plusIcon} alt="Plus" width="24px" className="mx-1" />
+);
+
+export const MinusIcon = () => (
+    <img src={minusIcon} alt="Minus" width="24px" className="mx-1" />
 );

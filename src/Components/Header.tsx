@@ -6,7 +6,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
-
 import { Logo } from "./Images";
 import { UserIcon } from "./Images";
 

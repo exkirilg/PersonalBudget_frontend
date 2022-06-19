@@ -1,8 +1,6 @@
 import React from "react";
-
 import { Page } from "./Page";
-
-import { OperationsTable } from "../Components/Operations/OperationsTable";
+import { OperationsTable } from "../Components/OperationsTable";
 
 export const HomePage = () => (
     <Page>

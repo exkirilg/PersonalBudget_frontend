@@ -10,7 +10,6 @@ import { Footer } from './Components/Footer';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { HomePage } from './Pages/HomePage';
-import { OperationPage } from './Pages/OperationPage';
 import { SignInPage } from './Pages/SignInPage';
 import { SignUpPage } from './Pages/SignUpPage';
 import { UserPage } from './Pages/UserPage';
@@ -23,11 +22,10 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <div className="App d-flex flex-column min-vh-100">
+        <div className="d-flex flex-column min-vh-100">
           <Header />
           <Routes>
             <Route path="" element={<HomePage />} />
-            <Route path="operations/:operationId" element={<OperationPage />} />
             <Route path="signin" element={<SignInPage />} />
             <Route path="signup" element={<SignUpPage />} />
             <Route path="user" element={<UserPage />} />
