@@ -46,6 +46,7 @@ export const OperationsTable = () => {
     const operations = useSelector((state: AppState) => state.operations.operations);
     const searched = useSelector((state: AppState) => state.operations.searched);
     const operation = useSelector((state: AppState) => state.operations.operation);
+    const message = useSelector((state: AppState) => state.operations.operationsMessage);
 
     const [showOperation, setShowOperation] = useState(false);
 
@@ -317,6 +318,14 @@ export const OperationsTable = () => {
 
             {loading ?
                 (<div className="spinner-border m-5" role="status" />) : (operationsTable())}
+
+            {
+                message &&
+                <div className="text-center">
+                    <p className="text-danger">{message}</p>
+                </div>
+                
+            }
 
             {
                 operation !== null &&
