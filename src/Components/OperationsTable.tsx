@@ -20,7 +20,12 @@ import { Operation } from "../Models/Operation";
 import { OperationType } from "../Models/OperationType";
 import { OperationsFilterSettings } from "../Models/OperationsFilterSettings";
 import { getOperations } from "../Data/OperationsData";
-import { getDateAsString, getDateBeginning, getDateEnd, getDatePresentation } from "../Services/DateTimeServices";
+import {
+    getDateAsString,
+    getDateBeginning,
+    getDateEnd,
+    getDateTimePresentation
+} from "../Services/DateTimeServices";
 
 import { OperationForm } from "./OperationForm";
 import { Chart } from "./OperationsChart";
@@ -35,6 +40,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
 
 import { FilterIcon, EditIcon, OkIcon, DeleteIcon, PlusIcon, MinusIcon } from "./Images";
 
@@ -221,13 +227,6 @@ export const OperationsTable = () => {
                         operationsTableRow(operation)
                     ))}
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td className="fs-5 fw-bold text-end" colSpan={4}>
-                            {operationsTableResult(filter.search === "" ? operations : searched)}
-                        </td>
-                    </tr>
-                </tfoot>
             </Table>
         );
     }
@@ -237,7 +236,7 @@ export const OperationsTable = () => {
         return (
             <tr key={operation.id} className={bgClass}>
                 <td className="text-start align-middle">
-                    {getDatePresentation(operation.date)}
+                    {getDateTimePresentation(operation.date)}
                 </td>
                 <td className="text-start align-middle">{operation.item!.name}</td>
                 <td className="text-end align-middle">{operation.sum.toFixed(2)}</td>
@@ -247,31 +246,6 @@ export const OperationsTable = () => {
                     </Button> 
                 </td>
             </tr>
-        );
-    }
-    const operationsTableResult = (data: Operation[]) => {
-    
-        const getOperationsResult = (data: Operation[]): number => {
-    
-            const getOperationsSum = (data: Operation[], type: OperationType): number => {
-                let result = data.reduce((a, b) => {
-                    a += (b.type === type ? b.sum : 0);
-                    return a;
-                }, 0);
-                return result;
-            }
-        
-            return getOperationsSum(data, OperationType.Income) - getOperationsSum(data, OperationType.Expense);
-        
-        }
-    
-        const operationsResult = getOperationsResult(data);
-        const fontClass = operationsResult >= 0 ? "text-success" : "text-danger";
-    
-        return (
-            <span className={fontClass}>
-                {Math.abs(operationsResult).toFixed(2)}
-            </span>
         );
     }
     const modalOperationForm = () => {
@@ -346,7 +320,7 @@ export const OperationsTable = () => {
                     (
                         <Row className="mt-3 h-50">
                             <Col className="col-3">
-                                <Stack direction="vertical" className="my-5" gap={5}>
+                                <Stack direction="vertical" gap={3}>
                                     <Chart type={OperationType.Income} />
                                     <Chart type={OperationType.Expense} />
                                 </Stack>

@@ -27,6 +27,6 @@ export function getDateEnd(date: Date) : Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
 }
 
-export function getDatePresentation(date: Date) : string {
+export function getDateTimePresentation(date: Date) : string {
     return date.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
 }

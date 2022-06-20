@@ -110,20 +110,20 @@ export const Chart = ({type}: Props) => {
     return (
         <Container className="text-center">
             
-            <h4 className={type === OperationType.Income ? "text-success" : "text-danger"}>
-                {`${type}s`} {getSum(operations.filter(operation => operation.type === type)).toFixed(2)}
-            </h4>
+            <h5 className={type === OperationType.Income ? "text-success" : "text-danger"}>
+                Main {`${type}s`} {getSum(operations.filter(operation => operation.type === type)).toFixed(2)}
+            </h5>
             
             <PieChart
                 data={getChartData(type)}
                 lineWidth={15}
                 paddingAngle={15}
                 rounded
-                label={({ dataEntry }) => dataEntry.title}
+                label={({ dataEntry }) => dataEntry.title!.toString().length > 10 ? `${dataEntry.title!.toString().substring(0, 3)}...` : dataEntry.title }
                 labelStyle={(index) => ({
                     fill: getChartData(type)[index].color,
                     fontSize: '5px',
-                    fontFamily: 'sans-serif',
+                    fontFamily: 'sans-serif'
                 })}
                 labelPosition={65}
                 animate
