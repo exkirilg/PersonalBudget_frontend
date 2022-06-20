@@ -23,6 +23,7 @@ import { getOperations } from "../Data/OperationsData";
 import { getDateAsString, getDateBeginning, getDateEnd, getDatePresentation } from "../Services/DateTimeServices";
 
 import { OperationForm } from "./OperationForm";
+import { Chart } from "./OperationsChart";
 
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -32,6 +33,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import { FilterIcon, EditIcon, OkIcon, DeleteIcon, PlusIcon, MinusIcon } from "./Images";
 
@@ -161,16 +164,23 @@ export const OperationsTable = () => {
         
                     <Form.Control type="text" {...register("search")} placeholder="Search..." />
 
-                    <Button variant="outline-secondary" type="submit">
-                        <FilterIcon />
-                    </Button>
+                    <OverlayTrigger placement="top" overlay={
+                        <Tooltip>
+                            Set filter
+                        </Tooltip>
+                    }>
+                        <Button variant="outline-secondary" type="submit">
+                            <FilterIcon />
+                        </Button>
+                    </OverlayTrigger>
+
                 </Stack>
             </Form>
         );
     }
     const operationsTableControl = () => {
         return (
-            <Stack direction="horizontal" className="justify-content-end" gap={2}>
+            <Stack direction="horizontal" gap={2}>
                 
                 <OverlayTrigger placement="top" overlay={
                     <Tooltip>
@@ -307,25 +317,48 @@ export const OperationsTable = () => {
     return (
         <Container>
 
-            <Stack direction="horizontal" className="my-2" gap={2}>
-                <div className="me-auto">
-                    {filterForm()}
-                </div>
-                <div className="ms-auto">
-                    {operationsTableControl()}
-                </div>
-            </Stack>
+            <Container>
 
-            {loading ?
-                (<div className="spinner-border m-5" role="status" />) : (operationsTable())}
+                {
+                    message &&
+                    <Row className="text-center">
+                        <h4 className="text-danger">{message}</h4>
+                    </Row>
+                }
 
-            {
-                message &&
-                <div className="text-center">
-                    <p className="text-danger">{message}</p>
-                </div>
-                
-            }
+                <Row>
+                    <Col className="col-10">
+                        {filterForm()}
+                    </Col>
+                    <Col className="col-2">
+                        {operationsTableControl()}
+                    </Col>
+                </Row>
+
+                {
+                    loading ?
+                    (
+                        <Row className="d-flex justify-content-center">
+                            <div className="spinner-border my-5" role="status" />
+                        </Row>
+                    )
+                        :
+                    (
+                        <Row className="mt-3 h-50">
+                            <Col className="col-3">
+                                <Stack direction="vertical" className="my-5" gap={5}>
+                                    <Chart type={OperationType.Income} />
+                                    <Chart type={OperationType.Expense} />
+                                </Stack>
+                            </Col>
+                            <Col className="col-9">
+                                { operationsTable() }
+                            </Col>
+                        </Row>
+                    )
+                }
+
+            </Container>
 
             {
                 operation !== null &&

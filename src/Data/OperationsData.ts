@@ -80,12 +80,15 @@ export const postOperation = async (operation: Operation): Promise<Operation | n
 }
 
 export const putOperation = async (operation: Operation): Promise<Operation | null> => {
+
+    let itemId = await ensureItem(operation.item!);
+
     const result = await makeHttpRequest<OperationDTO_Get, OperationDTO_Post>({
         path: `/budgetoperations/${operation.type.toString()}s/${operation.id}`,
         method: 'put',
         body: {
             date: operation.date,
-            itemId: operation.item!.id,
+            itemId: itemId,
             sum: operation.sum
         }
     });
