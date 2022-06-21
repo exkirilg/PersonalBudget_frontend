@@ -5,8 +5,13 @@ export interface OperationsState {
     readonly loading: boolean,
     readonly filter: OperationsFilterSettings,
     readonly operations: Operation[],
+    readonly search: string,
     readonly searched: Operation[],
-    readonly operationsMessage: string | null
+    readonly operationsPerPage: number,
+    readonly numberOfPages: number,
+    readonly currentPage: number,
+    readonly currentOperations: Operation[],
+    readonly operationsMessage: string | null,
     readonly operation: Operation | null,
     readonly loadingOperationForm: boolean,
     readonly saveOperation: boolean,
@@ -18,7 +23,12 @@ const initialOperationsState: OperationsState = {
     loading: false,
     filter: new OperationsFilterSettings(),
     operations: [],
+    search: "",
     searched: [],
+    operationsPerPage: 10,
+    numberOfPages: 0,
+    currentPage: 1,
+    currentOperations: [],
     operationsMessage: null,
     operation: null,
     loadingOperationForm: false,
@@ -33,6 +43,7 @@ export const CANCELGETTINGOPERATIONS = 'CancelGettingOperations';
 export const GOTOPERATIONS = 'GotOperations';
 export const SEARCHINGOPERATIONS = 'SearchingOperations';
 export const SEARCHEDOPERATIONS = 'SearchedOperations';
+export const SETPAGE = 'SetPage';
 export const GETTINGOPERATION = 'GettingOperation';
 export const GOTOPERATION = 'GotOperation';
 export const EDITINGOPERATION = 'EditingOperation';
@@ -59,11 +70,14 @@ export const cancelGettingOperationsAction = (message: string | null) => (
 export const gotOperationsAction = (operations: Operation[]) => (
     { type: GOTOPERATIONS, operations: operations } as const
 );
-export const searchingOperationsAction = () => (
-    { type: SEARCHINGOPERATIONS } as const
+export const searchingOperationsAction = (search: string) => (
+    { type: SEARCHINGOPERATIONS, search: search } as const
 );
 export const searchedOperationsAction = (operations: Operation[]) => (
-    { type: SEARCHEDOPERATIONS, operations } as const
+    { type: SEARCHEDOPERATIONS, operations: operations } as const
+);
+export const setPageAction = (page: number) => (
+    { type: SETPAGE, page: page } as const
 );
 export const editingOperationAction = (operation: Operation) => (
     { type: EDITINGOPERATION, operation: operation } as const
@@ -106,6 +120,7 @@ type OperationsActions =
     | ReturnType<typeof gotOperationsAction>
     | ReturnType<typeof searchingOperationsAction>
     | ReturnType<typeof searchedOperationsAction>
+    | ReturnType<typeof setPageAction>
     | ReturnType<typeof editingOperationAction>
     | ReturnType<typeof finishedEditingOperationAction>
     | ReturnType<typeof gettingItemsAction>
@@ -130,6 +145,9 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
             return {
                 ...state,
                 loading: true,
+                operations: [],
+                searched: [],
+                currentPage: 1,
                 operationsMessage: null
             }
         }
@@ -145,6 +163,8 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
                 ...state,
                 loading: false,
                 operations: action.operations,
+                numberOfPages: Math.ceil(action.operations.length / state.operationsPerPage),
+                currentPage: 1,
                 operationsMessage: null
             }
         }
@@ -152,6 +172,7 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
             return {
                 ...state,
                 loading: true,
+                search: action.search,
                 searched: []
             }
         }
@@ -159,7 +180,19 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
             return {
                 ...state,
                 loading: false,
-                searched: action.operations
+                searched: action.operations,
+                numberOfPages: Math.ceil(action.operations.length / state.operationsPerPage),
+                currentPage: 1
+            }
+        }
+        case SETPAGE: {
+            const operations = state.search === "" ? [...state.operations] : [...state.searched];
+            const start = state.operationsPerPage * (action.page - 1);
+            const currentOperations = operations.splice(start, Math.min(state.operationsPerPage, operations.length - start + 1));
+            return {
+                ...state,
+                currentPage: action.page,
+                currentOperations: currentOperations
             }
         }
         case EDITINGOPERATION: {

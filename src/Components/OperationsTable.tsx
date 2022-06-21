@@ -10,6 +10,7 @@ import {
     gotOperationsAction,
     searchingOperationsAction,
     searchedOperationsAction,
+    setPageAction,
     editingOperationAction,
     finishedEditingOperationAction,
     savingOperationAction,
@@ -40,7 +41,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
+import Pagination from "react-bootstrap/Pagination";
 
 import { FilterIcon, EditIcon, OkIcon, DeleteIcon, PlusIcon, MinusIcon } from "./Images";
 
@@ -53,7 +54,10 @@ export const OperationsTable = () => {
     const loading = useSelector((state: AppState) => state.operations.loading);
     const filter = useSelector((state: AppState) => state.operations.filter);
     const operations = useSelector((state: AppState) => state.operations.operations);
-    const searched = useSelector((state: AppState) => state.operations.searched);
+    const numberOfPages = useSelector((state: AppState) => state.operations.numberOfPages);
+    const currentPage = useSelector((state: AppState) => state.operations.currentPage);
+    const currentOperations = useSelector((state: AppState) => state.operations.currentOperations);
+    const currentSearch = useSelector((state: AppState) => state.operations.search);
     const operation = useSelector((state: AppState) => state.operations.operation);
     const message = useSelector((state: AppState) => state.operations.operationsMessage);
 
@@ -85,6 +89,12 @@ export const OperationsTable = () => {
     }
     const handleDeleteOperation = () => {
         dispatch(deletingOperationAction());
+    }
+
+    const handlePageChange = (page: number) => {
+        if (page !== currentPage) {
+            dispatch(setPageAction(page));
+        }
     }
 
     //#endregion
@@ -125,8 +135,9 @@ export const OperationsTable = () => {
     React.useEffect(() => {
         const doGetOperations = async (dateFrom: Date, dateTo: Date) => {
             dispatch(gettingOperationsAction());
-            const operations = await getOperations(getDateBeginning(dateFrom), getDateEnd(dateTo));
-            dispatch(gotOperationsAction(operations));
+            const _operations = await getOperations(getDateBeginning(dateFrom), getDateEnd(dateTo));
+            dispatch(gotOperationsAction(_operations));
+            dispatch(setPageAction(1));
         };
 
         doGetOperations(filter.dateFrom, filter.dateTo).catch(() => {
@@ -137,13 +148,16 @@ export const OperationsTable = () => {
     // Filtering operations by filter settings search value
     React.useEffect(() => {
         const doSearch = async (search: string) => {
-            dispatch(searchingOperationsAction());
+            dispatch(searchingOperationsAction(search));
             const searched = operations.filter(
                 operation => search === "" || operation.item!.name.toLowerCase().indexOf(search.toLowerCase()) >= 0);
             dispatch(searchedOperationsAction(searched));
+            dispatch(setPageAction(1));
         };
 
-        doSearch(filter.search);
+        if (filter.search !== currentSearch) {
+            doSearch(filter.search);
+        }
     }, [dispatch, operations, filter.search]);
 
     // Show Modal operation form
@@ -223,7 +237,7 @@ export const OperationsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {(filter.search === "" ? operations : searched).map((operation) => (
+                    {currentOperations.map((operation) => (
                         operationsTableRow(operation)
                     ))}
                 </tbody>
@@ -246,6 +260,28 @@ export const OperationsTable = () => {
                     </Button> 
                 </td>
             </tr>
+        );
+    }
+    const operationsTablePagination = () => {
+        
+        const getPaginationItems = () => {
+            let items = [];
+            for (let i = 1; i <= numberOfPages; i++) {
+                items.push(
+                    <Pagination.Item key={i} active={i === currentPage} onClick={() => handlePageChange(i)}>
+                        {i}
+                    </Pagination.Item>,
+                );
+            }
+            return items;
+        }
+        
+        return (
+            <Container className="d-flex justify-content-center">
+                <Pagination>
+                    {getPaginationItems()}
+                </Pagination>
+            </Container>
         );
     }
     const modalOperationForm = () => {
@@ -295,7 +331,7 @@ export const OperationsTable = () => {
 
                 {
                     message &&
-                    <Row className="text-center">
+                    <Row className="text-center my-2">
                         <h4 className="text-danger">{message}</h4>
                     </Row>
                 }
@@ -327,6 +363,7 @@ export const OperationsTable = () => {
                             </Col>
                             <Col className="col-9">
                                 { operationsTable() }
+                                { operationsTablePagination() }
                             </Col>
                         </Row>
                     )
