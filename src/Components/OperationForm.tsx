@@ -10,7 +10,8 @@ import {
     savedOperationAction,
     cancelDeletingOperationAction,
     deletedOperationAction,
-    finishedEditingOperationAction
+    finishedEditingOperationAction,
+    setPageAction
 } from "../State/OperationsState";
 import { postOperation, putOperation, deleteOperation } from "../Data/OperationsData";
 
@@ -44,6 +45,7 @@ export const OperationForm = () => {
     const doSave = useSelector((state: AppState) => state.operations.saveOperation);
     const doDelete = useSelector((state: AppState) => state.operations.deleteOperation);
     const message = useSelector((state: AppState) => state.operations.operationFormMessage);
+    const currentPage = useSelector((state: AppState) => state.operations.currentPage);
 
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         mode: "onTouched",
@@ -113,6 +115,7 @@ export const OperationForm = () => {
 
             if (result !== null) {
                 dispatch(savedOperationAction(result));
+                dispatch(setPageAction(currentPage));
                 dispatch(finishedEditingOperationAction());
             }
             else {
@@ -138,6 +141,7 @@ export const OperationForm = () => {
 
             if (result) {
                 dispatch(deletedOperationAction(operation!.id));
+                dispatch(setPageAction(currentPage));
                 dispatch(finishedEditingOperationAction());
             }
             else {
