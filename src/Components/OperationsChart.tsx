@@ -17,7 +17,7 @@ type ChartData = {
     title: string;
 }[];
 
-const colorIncomesOthers = "#CDF0EA";
+const colorIncomesOthers = "#BEB9DB";
 const colorsIncomes: string[] = ([
     "#76BA99",
     "#ADCF9F",
