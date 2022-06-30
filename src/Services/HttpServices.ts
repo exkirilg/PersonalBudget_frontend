@@ -12,12 +12,18 @@ export interface HttpResponse<RESB> {
 }
 
 export const makeHttpRequest = async <RESB, REQB = undefined>(config: HttpRequest<REQB>): Promise<HttpResponse<RESB>> => {
+    let authToken = sessionStorage.getItem("authToken");
+    if (authToken  === null){
+        authToken = "";
+    }
+    
     const request = new Request(
         `${webAPIUrl}${config.path}`,
         {
-            method: config.method || 'get',
+            method: config.method || "get",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
             },
             body: config.body ? JSON.stringify(config.body) : undefined
         }

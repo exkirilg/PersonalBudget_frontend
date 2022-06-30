@@ -282,6 +282,7 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
             return {
                 ...state,
                 operations: operations,
+                numberOfPages: Math.ceil(operations.length / state.operationsPerPage),
                 loadingOperationForm: false,
                 saveOperation: false,
                 operationFormMessage: null
@@ -308,6 +309,7 @@ export const OperationsReducer = (state = initialOperationsState, action: Operat
             return {
                 ...state,
                 operations: operations,
+                numberOfPages: Math.ceil(operations.length / state.operationsPerPage),
                 loadingOperationForm: false,
                 deleteOperation: false,
                 operationFormMessage: null

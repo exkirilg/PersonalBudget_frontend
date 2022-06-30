@@ -17,16 +17,19 @@ type ChartData = {
     title: string;
 }[];
 
-const colorIncomesOthers = "#8bd3c7";
-const colorExpensesOthers = "#fd7f6f";
-const colors: string[] = ([
-    "#7eb0d5",
-    "#b2e061",
-    "#bd7ebe",
-    "#ffb55a",
-    "#ffee65",
-    "#beb9db",
-    "#fdcce5"
+const colorIncomesOthers = "#CDF0EA";
+const colorsIncomes: string[] = ([
+    "#76BA99",
+    "#ADCF9F",
+    "#CED89E",
+    "#FFDCAE"
+]);
+const colorExpensesOthers = "#B25068";
+const colorsExpenses: string[] = ([
+    "#E7AB79",
+    "#FFC3C3",
+    "#FF8C8C",
+    "#FF5D5D"
 ]);
 
 export const Chart = ({type}: Props) => {
@@ -67,6 +70,8 @@ export const Chart = ({type}: Props) => {
 
             return 0;
         });
+
+        const colors = type === OperationType.Income ? colorsIncomes : colorsExpenses;
 
         const minValue = 10;
         if (result.length > colors.length || result.filter(e => e.value < minValue).length > 1) {

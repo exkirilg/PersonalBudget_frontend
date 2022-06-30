@@ -34,7 +34,7 @@ export const mapOperationDTO = (operation: OperationDTO_Get): Operation => {
 
 export const getOperations = async (dateFrom: Date, dateTo: Date): Promise<Operation[]> => {
     const result = await makeHttpRequest<OperationDTO_Get[]>({
-        path: `/budgetoperations?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`
+        path: `/operations?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`
     });
     
     if (result.ok && result.body) {
@@ -46,7 +46,7 @@ export const getOperations = async (dateFrom: Date, dateTo: Date): Promise<Opera
 
 export const getOperationById = async (id: number): Promise<Operation | null> => {
     const result = await makeHttpRequest<OperationDTO_Get>({
-        path: `/budgetoperations/${id}`
+        path: `/operations/${id}`
     });
 
     if (result.ok && result.body) {
@@ -62,8 +62,8 @@ export const postOperation = async (operation: Operation): Promise<Operation | n
     let itemId = await ensureItem(operation.item!);
     
     const result = await makeHttpRequest<OperationDTO_Get, OperationDTO_Post>({
-        path: `/budgetoperations/${operation.type.toString()}s`,
-        method: 'post',
+        path: `/operations/${operation.type.toString()}s`,
+        method: "post",
         body: {
             date: operation.date,
             itemId: itemId,
@@ -84,8 +84,8 @@ export const putOperation = async (operation: Operation): Promise<Operation | nu
     let itemId = await ensureItem(operation.item!);
 
     const result = await makeHttpRequest<OperationDTO_Get, OperationDTO_Post>({
-        path: `/budgetoperations/${operation.type.toString()}s/${operation.id}`,
-        method: 'put',
+        path: `/operations/${operation.type.toString()}s/${operation.id}`,
+        method: "put",
         body: {
             date: operation.date,
             itemId: itemId,
@@ -103,8 +103,8 @@ export const putOperation = async (operation: Operation): Promise<Operation | nu
 
 export const deleteOperation = async (operationId: number): Promise<boolean> => {
     const result = await makeHttpRequest<boolean>({
-        path: `/budgetoperations/${operationId}`,
-        method: 'delete'
+        path: `/operations/${operationId}`,
+        method: "delete"
     });
 
     if (result.ok) {

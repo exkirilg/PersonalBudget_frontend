@@ -14,7 +14,7 @@ export interface ItemDTO_Post {
 
 export const getItemsByType = async (type: OperationType): Promise<Item[]> => {
     const result = await makeHttpRequest<ItemDTO_Get[]>({
-        path: `/budgetitems/${type}s`
+        path: `/items/${type}s`
     });
     
     if (result.ok && result.body) {
@@ -26,8 +26,8 @@ export const getItemsByType = async (type: OperationType): Promise<Item[]> => {
 
 export const postItem = async (item: Item): Promise<Item | null> => {
     const result = await makeHttpRequest<ItemDTO_Get, ItemDTO_Post>({
-        path: `/budgetitems/${item.type.toString()}s`,
-        method: 'post',
+        path: `/items/${item.type.toString()}s`,
+        method: "post",
         body: {
             name: item.name
         }

@@ -227,21 +227,26 @@ export const OperationsTable = () => {
     }
     const operationsTable = () => {
         return (
-            <Table bordered hover>
-                <thead className="thead-dark">
-                    <tr>
-                        <th className="col-4">Date</th>
-                        <th className="col-5">Item</th>
-                        <th className="col-2">Sum</th>
-                        <th className="col-1"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentOperations.map((operation) => (
-                        operationsTableRow(operation)
-                    ))}
-                </tbody>
-            </Table>
+            <Container>
+                {
+                    currentOperations.length > 0 && 
+                    <Table bordered hover>
+                        <thead className="thead-dark">
+                            <tr>
+                                <th className="col-4">Date</th>
+                                <th className="col-5">Item</th>
+                                <th className="col-2">Sum</th>
+                                <th className="col-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentOperations.map((operation) => (
+                                operationsTableRow(operation)
+                            ))}
+                        </tbody>
+                    </Table>
+                }
+            </Container>
         );
     }
     const operationsTableRow = (operation : Operation) => {

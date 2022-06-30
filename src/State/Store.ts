@@ -1,4 +1,5 @@
 import { Store, createStore, combineReducers } from 'redux';
+import { IdentityState, IdentityReducer } from './IdentityState';
 import { OperationsState, OperationsReducer } from './OperationsState';
 
 export function configureStore(): Store<AppState> {
@@ -7,9 +8,11 @@ export function configureStore(): Store<AppState> {
 }
 
 export interface AppState {
+    readonly identity: IdentityState,
     readonly operations: OperationsState
 }
 
 const rootReducer = combineReducers<AppState>({
+    identity: IdentityReducer,
     operations: OperationsReducer
 });

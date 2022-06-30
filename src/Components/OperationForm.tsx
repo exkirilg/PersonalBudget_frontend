@@ -231,19 +231,27 @@ export const OperationForm = () => {
         <Container>
 
             {
-                !loading &&
-                <Form className="my-3">
-                    
-                    {
-                        operation?.id !== 0 &&
-                        idInput()
-                    }
-                    
-                    {dateInput()}
-                    {itemInput()}
-                    {sumInput()}
+                loading ?
+                (
+                    <Row className="d-flex justify-content-center">
+                        <div className="spinner-border my-5" role="status" />
+                    </Row>
+                )
+                :
+                (
+                    <Form className="my-3">
+                        
+                        {
+                            operation?.id !== 0 &&
+                            idInput()
+                        }
+                        
+                        {dateInput()}
+                        {itemInput()}
+                        {sumInput()}
 
-                </Form>
+                    </Form>
+                )
             }
 
             {
