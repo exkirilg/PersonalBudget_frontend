@@ -284,7 +284,7 @@ export const OperationsTable = () => {
         return (
             <Container className="d-flex justify-content-center">
                 <Pagination>
-                    {getPaginationItems()}
+                    {numberOfPages  > 1 && getPaginationItems()}
                 </Pagination>
             </Container>
         );
