@@ -130,7 +130,7 @@ export const Chart = ({type}: Props) => {
                     fontSize: '5px',
                     fontFamily: 'sans-serif'
                 })}
-                labelPosition={65}
+                labelPosition={75}
                 animate
                 background="#e2e2e2"
             />
