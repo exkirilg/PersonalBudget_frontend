@@ -1,4 +1,5 @@
 import { makeHttpRequest } from "../Services/HttpServices";
+import appsettings from "../appsettings.json";
 
 export interface IdentityDTO {
     userName: string,
@@ -60,7 +61,7 @@ export const signinDemo = async (): Promise<IdentityDTO | null> => {
     const result = await makeHttpRequest<IdentityDTO, SigninDTO>({
         path: "/identity/signin",
         method: "post",
-        body: { email: "demo@demo.com", password: "321456" }
+        body: { email: appsettings.demo_user.email, password: appsettings.demo_user.password }
     });
     
     if (result.ok && result.body) {

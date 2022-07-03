@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { gettingSigninAction, signinSuccessAction, signinFailAction } from "../State/IdentityState";
 import { setDefaultSettingsAction } from "../State/OperationsState";
 import { useNavigate } from "react-router-dom";
+import appsettings from "../appsettings.json";
 
 import { signin } from "../Data/IdentityData";
 
@@ -21,7 +22,7 @@ export const SignInPageDemo = () => {
     React.useEffect(() => {
         const doSignin = async () => {
             dispatch(gettingSigninAction());
-            const result = await signin({ email: "demo@demo.com", password: "321456" });
+            const result = await signin({ email: appsettings.demo_user.email, password: appsettings.demo_user.password });
 
             if (result === null) {
                 dispatch(signinFailAction("Incorrect email or password."));

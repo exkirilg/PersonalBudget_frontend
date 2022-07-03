@@ -1,2 +1,4 @@
-export const server = 'https://localhost:7143';
+import appsettings from "./appsettings.json";
+
+export const server = appsettings.server;
 export const webAPIUrl = `${server}/api`;
