@@ -4,6 +4,8 @@ import { OperationType } from "../Models/OperationType";
 import { makeHttpRequest } from "../Services/HttpServices";
 import { postItem } from "./ItemsData";
 
+import { signinDemo } from "./IdentityData";
+
 export interface OperationDTO_Get {
     id: number,
     date: Date,
@@ -36,6 +38,29 @@ export const getOperations = async (dateFrom: Date, dateTo: Date): Promise<Opera
     const result = await makeHttpRequest<OperationDTO_Get[]>({
         path: `/operations?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`
     });
+    
+    if (result.ok && result.body) {
+        return result.body.map(mapOperationDTO);
+    } else {
+        return [];
+    }
+}
+
+export const getOperationsDemo = async (dateFrom: Date, dateTo: Date): Promise<Operation[]> => {
+    const signinResult = await signinDemo();
+
+    if (signinResult === null)
+        return [];
+
+    const currentToken = sessionStorage.getItem("authToken");
+    sessionStorage.setItem("authToken", signinResult.token);
+
+    const result = await makeHttpRequest<OperationDTO_Get[]>({
+        path: `/operations?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`
+    });
+
+    if (currentToken !== null)
+        sessionStorage.setItem("authToken", currentToken);
     
     if (result.ok && result.body) {
         return result.body.map(mapOperationDTO);

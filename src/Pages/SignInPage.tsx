@@ -2,6 +2,7 @@ import React from "react";
 import { AppState } from "../State/Store";
 import { useSelector, useDispatch } from "react-redux";
 import { gettingSigninAction, signinSuccessAction, signinFailAction } from "../State/IdentityState";
+import { setDefaultSettingsAction } from "../State/OperationsState";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -35,6 +36,7 @@ export const SignInPage = () => {
             return;
         }
 
+        dispatch(setDefaultSettingsAction());
         dispatch(signinSuccessAction(result.token, result.expirationDate, result.userName, result.isAdmin));
         navigate("../", { replace: true });
     }

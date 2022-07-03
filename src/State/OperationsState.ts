@@ -37,6 +37,7 @@ const initialOperationsState: OperationsState = {
     operationFormMessage: null 
 }
 
+export const SETDEFAULTSETTINGS = 'SetDefaultSettings';
 export const SETFILTER = 'SetFilter';
 export const GETTINGOPERATIONS = 'GettingOperations';
 export const CANCELGETTINGOPERATIONS = 'CancelGettingOperations';
@@ -58,6 +59,9 @@ export const DELETINGOPERATION = 'DeletingOperation';
 export const CANCELDELETINGOPERATION = 'CancelDeletingOperation';
 export const DELETEDOPERATION = 'DeletedOperation';
 
+export const setDefaultSettingsAction = () => (
+    { type : SETDEFAULTSETTINGS } as const
+);
 export const setFilterAction = (filter: OperationsFilterSettings) => (
     { type: SETFILTER, filter: filter } as const
 );
@@ -114,6 +118,7 @@ export const deletedOperationAction = (operationId: number) => (
 );
 
 type OperationsActions =
+    | ReturnType<typeof setDefaultSettingsAction>
     | ReturnType<typeof setFilterAction>
     | ReturnType<typeof gettingOperationsAction>
     | ReturnType<typeof cancelGettingOperationsAction>
@@ -135,6 +140,9 @@ type OperationsActions =
 
 export const OperationsReducer = (state = initialOperationsState, action: OperationsActions) => {
     switch (action.type) {
+        case SETDEFAULTSETTINGS: {
+            return initialOperationsState;
+        }
         case SETFILTER: {
             return {
                 ...state,

@@ -2,6 +2,7 @@ import React from "react";
 import { AppState } from "../State/Store";
 import { useSelector, useDispatch } from "react-redux";
 import { gettingSignupAction, signupSuccessAction, signupFailAction } from "../State/IdentityState";
+import { setDefaultSettingsAction } from "../State/OperationsState";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -54,6 +55,7 @@ export const SignUpPage = () => {
             return;
         }
 
+        dispatch(setDefaultSettingsAction());
         dispatch(signupSuccessAction(result.token, result.expirationDate, result.userName, result.isAdmin));
         navigate("../", { replace: true });
     }

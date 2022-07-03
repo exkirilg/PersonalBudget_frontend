@@ -55,3 +55,22 @@ export const signup = async (signupDTO: SignupDTO): Promise<IdentityDTO | null> 
         return null;
     }
 }
+
+export const signinDemo = async (): Promise<IdentityDTO | null> => {
+    const result = await makeHttpRequest<IdentityDTO, SigninDTO>({
+        path: "/identity/signin",
+        method: "post",
+        body: { email: "demo@demo.com", password: "321456" }
+    });
+    
+    if (result.ok && result.body) {
+        return {
+            userName: result.body.userName,
+            token: result.body.token,
+            expirationDate: new Date(result.body.expirationDate),
+            isAdmin: result.body.isAdmin
+        };
+    } else {
+        return null;
+    }
+}
