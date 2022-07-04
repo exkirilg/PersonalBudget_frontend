@@ -215,7 +215,7 @@ export const OperationsDemo = () => {
                 <h4 className="text-center">Welcome to Personal Budget!</h4>
                 <p>
                     Information on this page is for demo purposes only.
-                    If you want to try app for yourself, please <Link to="/signup">Sign up</Link>.
+                    If you want to try app yourself, please <Link to="/signup">Sign up</Link>.
                     Also you can sign in as Demo user to get more control over this example, just <Link to="/signinDemo">Click here</Link>.
                 </p>
             </Container>

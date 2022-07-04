@@ -8,7 +8,7 @@ export const ContactsPage = () => (
     <Page>
         <Container className="mt-5">
             <p>Hi! Nice to meet you!</p>
-            <p>My name is Kirill and, probably, I am in search of a job as a C# / dotnet developer.</p>
+            <p>My name is Kirill and I am in search of a job as a C# / dotnet developer.</p>
             <p>If by any chance you are interested, please contact me:</p>
 
             <ListGroup variant="flush">
