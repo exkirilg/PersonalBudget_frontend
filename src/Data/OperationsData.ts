@@ -40,7 +40,15 @@ export const getOperations = async (dateFrom: Date, dateTo: Date): Promise<Opera
     });
     
     if (result.ok && result.body) {
-        return result.body.map(mapOperationDTO);
+        let collection = result.body.map(mapOperationDTO);
+        collection.sort((o1, o2) => {
+            if (o1.date > o2.date)
+                return 1;
+            if (o1.date < o2.date)
+                return -1;
+            return 0;
+        })
+        return collection;
     } else {
         return [];
     }
@@ -63,7 +71,15 @@ export const getOperationsDemo = async (dateFrom: Date, dateTo: Date): Promise<O
         sessionStorage.setItem("authToken", currentToken);
     
     if (result.ok && result.body) {
-        return result.body.map(mapOperationDTO);
+        let collection = result.body.map(mapOperationDTO);
+        collection.sort((o1, o2) => {
+            if (o1.date > o2.date)
+                return 1;
+            if (o1.date < o2.date)
+                return -1;
+            return 0;
+        })
+        return collection;
     } else {
         return [];
     }

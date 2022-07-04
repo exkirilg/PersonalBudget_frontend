@@ -18,7 +18,15 @@ export const getItemsByType = async (type: OperationType): Promise<Item[]> => {
     });
     
     if (result.ok && result.body) {
-        return result.body;
+        let collection = result.body;
+        collection.sort((i1, i2) => {
+            if (i1.name > i2.name)
+                return 1;
+            if (i1.name < i2.name)
+                return -1;
+            return 0;
+        })
+        return collection;
     } else {
         return [];
     }
