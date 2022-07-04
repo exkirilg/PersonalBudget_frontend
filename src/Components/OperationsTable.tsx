@@ -318,9 +318,12 @@ export const OperationsTable = () => {
                     <Button variant="outline-success" onClick={handleSaveOperation}>
                         <OkIcon />
                     </Button>
-                    <Button variant="outline-danger" onClick={handleDeleteOperation}>
-                        <DeleteIcon />
-                    </Button>
+                    {
+                        operation?.id !== 0 &&
+                        <Button variant="outline-danger" onClick={handleDeleteOperation}>
+                            <DeleteIcon />
+                        </Button>
+                    }
                 </Modal.Footer>
 
             </Modal>
