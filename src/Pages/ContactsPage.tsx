@@ -8,7 +8,8 @@ export const ContactsPage = () => (
     <Page>
         <Container className="mt-5">
             <p>Hi! Nice to meet you!</p>
-            <p>My name is Kirill and I am in search of a job as a C# / dotnet developer.</p>
+            <p>My name is Kirill and I am in search of a job as a C#/.NET developer.</p>
+            <p>You can get my CV <a href={appsettings.contacts.cv}>here</a>.</p>
             <p>If by any chance you are interested, please contact me:</p>
 
             <ListGroup variant="flush">
